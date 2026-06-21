@@ -24,15 +24,15 @@ PER_PAGE = 100
 MAX_WORKERS = 8
 
 ROOT = Path(__file__).resolve().parents[1]
-WORK = ROOT / "work"
+CACHE = ROOT / ".cache"
 OUTPUTS = ROOT / "outputs"
 
-# Keep the same deliverable filenames from the previous runs.
-CSV_PATH = OUTPUTS / "nber_environment_energy_working_papers_page1_summaries.csv"
-JSON_PATH = OUTPUTS / "nber_environment_energy_working_papers_page1_summaries.json"
-MD_PATH = OUTPUTS / "nber_environment_energy_working_papers_page1_summaries.md"
-ERROR_PATH = WORK / "nber_environment_energy_working_papers_structured_errors.json"
-SAFE_RAW_PATH = WORK / "nber_environment_energy_working_papers_structured_rows.json"
+# Public exports live in outputs; restart-safe crawl state stays in .cache.
+CSV_PATH = OUTPUTS / "nber_environment_energy_structured.csv"
+JSON_PATH = OUTPUTS / "nber_environment_energy_structured.json"
+MD_PATH = OUTPUTS / "nber_environment_energy_structured.md"
+ERROR_PATH = CACHE / "nber_environment_energy_errors.json"
+SAFE_RAW_PATH = CACHE / "nber_environment_energy_structured_rows.json"
 
 STOPWORDS = {
     "a", "about", "above", "across", "after", "against", "all", "also", "am",
@@ -121,7 +121,7 @@ YEAR_CONTEXT_RE = re.compile(
 
 
 def fetch_text(url: str, timeout: int = 45) -> str:
-    req = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; Codex data fetch)"})
+    req = Request(url, headers={"User-Agent": "nber-environment-knowledge-graph/1.0"})
     with urlopen(req, timeout=timeout) as response:
         return response.read().decode("utf-8", errors="replace")
 
@@ -413,7 +413,7 @@ def fetch_paper(item_with_rank: tuple[int, dict]) -> tuple[dict | None, dict | N
 
 def write_outputs(rows: list[dict], errors: list[dict], listed_total: int) -> None:
     OUTPUTS.mkdir(parents=True, exist_ok=True)
-    WORK.mkdir(parents=True, exist_ok=True)
+    CACHE.mkdir(parents=True, exist_ok=True)
 
     JSON_PATH.write_text(json.dumps(rows, indent=2, ensure_ascii=False), encoding="utf-8")
     SAFE_RAW_PATH.write_text(json.dumps(rows, indent=2, ensure_ascii=False), encoding="utf-8")
