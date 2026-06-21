@@ -7,7 +7,9 @@ from xml.sax.saxutils import escape
 
 
 ROOT = Path(__file__).resolve().parents[1]
-INPUT_CSV = ROOT / "outputs" / "nber_environment_energy_working_papers_page1_summaries.csv"
+FULL_INPUT_CSV = ROOT / "outputs" / "nber_environment_energy_structured.csv"
+SAMPLE_INPUT_CSV = ROOT / "data" / "sample_papers.csv"
+INPUT_CSV = FULL_INPUT_CSV if FULL_INPUT_CSV.exists() else SAMPLE_INPUT_CSV
 OUTPUTS = ROOT / "outputs"
 
 NODES_CSV = OUTPUTS / "nber_environment_energy_kg_nodes.csv"
@@ -292,6 +294,7 @@ def write_graphml(path: Path, nodes: list[dict], edges: list[dict]) -> None:
 
 
 def main() -> None:
+    OUTPUTS.mkdir(parents=True, exist_ok=True)
     rows = read_rows(INPUT_CSV)
     nodes, edges = build_graph(rows)
 

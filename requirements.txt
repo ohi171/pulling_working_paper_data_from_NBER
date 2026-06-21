@@ -1,1 +1,4 @@
-The MIT License applies only to original code and documentation in this repository. NBER paper content, abstracts, PDFs, and third-party metadata remain subject to their respective owners’ terms and are not covered by this license.
+jupyterlab>=4,<5
+ipykernel>=6,<7
+networkx>=3,<4
+plotly>=5,<7
