@@ -538,6 +538,9 @@ Respect the source site:
 - Do not redistribute bulk full abstract text unless you have permission.
 - For public outputs, prefer structured notes, summaries, keywords, and source links.
 
+## 14. LICENSE
+- The MIT License applies only to original code and documentation in this repository. NBER paper content, abstracts, PDFs, and third-party metadata remain subject to their respective owners’ terms and are not covered by this license.
+
 Improve the analysis:
 
 - Use an LLM or NLP model to produce higher-quality structured summaries.
